@@ -73,23 +73,31 @@ function createPrototype(obj) {
     // newPriceChild.innerText = obj['priceChild'];
     
     const submitBtn = document.querySelector('li > form > div > input');
-    console.log(submitBtn); // KONSULTACJE wyszukuje button w LiElement // KONSULTACJE - jak dostać się do buttonu w nowychLi, aby dodać im dataset?
+    console.log(submitBtn); // KONSULTACJE wyszukuje button w LiElement 
+    // KONSULTACJE - jak dostać się do buttonu w nowychLi, aby dodać im dataset?
+    // np. mamy data-name="Ogrodzieniec"
+    // const submitBtn = document.querySelector([data-name="name"])??
+    // if(dataset === name) {
 
+    }
+    
     // submitBtn.dataset.submit = obj['??'];
-}
+// }
 
 //KOSZYK I DODAWANIE DO NIEGO WYCIECZEK
-//1. po kliknięciu w 'dodaj do zamówienia':
+//1. po kliknięciu w 'dodaj do zamówienia': 
+
+//
 //walidujemy: czy wpisano liczbę od 0 w górę
 //Jeśli tak to: 
 // 2. dodajemy do listy w koszyku [name + suma ceny + przycisk 'X', child ilość + cena, adult ilość + cena]
 // 3. powiększamy sumę w KOSZYKU
 // 4. przed wysłaniem zamowienia sprawdzamy, czy 'inię + nazwisko + email' nie są puste + email ma @
 
-function addDataset() {
+// function addDataset() {
 
 
-}
+// }
 
 function createBasket(obj) {
 
