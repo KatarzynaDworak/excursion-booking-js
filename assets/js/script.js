@@ -50,54 +50,46 @@ function handleFile(event) {
 
 // KONSULTACJE: jak UKRYĆ pierwsze <li>?
 const liElement = document.querySelector('li');
-// liElement.style.display = 'none';
+liElement.style.display = 'none';
 
 function createPrototype(obj) {
 
     const newLi = document.querySelector('.excursions__item--prototype').cloneNode(true);
+    newLi.style.display = '';
     console.log(newLi); //2 newLi
     
     const newTitle = newLi.querySelector('.excursions__title');
     newTitle.innerText = obj['name'];
     newTitle.dataset.name = obj.name; //ok atrybut data-name = nazwa wycieczki dodany
+    const excursionName = obj.name; //NAME
     
     const newDescription = newLi.querySelector('.excursions__description');
     newDescription.innerText = obj['description']; //DZIAŁA
     
     ulElement.appendChild(newLi);
     
-    // const newPriceAdult = newLi.querySelector('.'); //KONSULTACJE
-    // newPriceAdult.innerText = obj['priceAdult'];
+    const newElements = document.querySelectorAll('.excursions__price');
+    console.log(newElements);
+
+    const newPriceAdult = newElements[0];
     
-    // const newPriceChild = newLi.querySelector('.'); //KONSULTACJE
-    // newPriceChild.innerText = obj['priceChild'];
+    const newPriceChild = newElements[1]; 
+
+    console.log('adult =>', newPriceAdult, 'child=>', newPriceChild);
     
     const submitBtn = document.querySelector('li > form > div > input');
-    console.log(submitBtn); // KONSULTACJE wyszukuje button w LiElement 
-    // KONSULTACJE - jak dostać się do buttonu w nowychLi, aby dodać im dataset?
-    // np. mamy data-name="Ogrodzieniec"
-    // const submitBtn = document.querySelector([data-name="name"])??
-    // if(dataset === name) {
+    console.log(submitBtn); 
 
-    }
-    
-    // submitBtn.dataset.submit = obj['??'];
-// }
+}
 
-//KOSZYK I DODAWANIE DO NIEGO WYCIECZEK
-//1. po kliknięciu w 'dodaj do zamówienia': 
-
-//
-//walidujemy: czy wpisano liczbę od 0 w górę
-//Jeśli tak to: 
-// 2. dodajemy do listy w koszyku [name + suma ceny + przycisk 'X', child ilość + cena, adult ilość + cena]
-// 3. powiększamy sumę w KOSZYKU
-// 4. przed wysłaniem zamowienia sprawdzamy, czy 'inię + nazwisko + email' nie są puste + email ma @
-
-// function addDataset() {
-
-
-// }
+//ETAPY:
+// 1. co potrzebne? 
+// nazwa wycieczki excursionName
+//cena dorosły newElements[0], cena dziecko newElements[1]
+// wyliczamy sumę = ilość dorosłych x cena dorosły newElements[0], ilość dzieci [nasłuchiwanie na submit + to co wpisał uzytkownik e.target.value] x cena dziecko newElements[1]
+const addToChartBtn = document.querySelector('.excursions__field-input');
+console.log(addToChartBtn);
+    //utworzenie elementów w html i wyświetlenie w koszyku
 
 function createBasket(obj) {
 
