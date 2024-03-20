@@ -87,7 +87,7 @@ function createPrototype(obj) {
 // nazwa wycieczki excursionName
 //cena dorosły newElements[0], cena dziecko newElements[1]
 // wyliczamy sumę = ilość dorosłych x cena dorosły newElements[0], ilość dzieci [nasłuchiwanie na submit + to co wpisał uzytkownik e.target.value] x cena dziecko newElements[1]
-const addToChartBtn = document.querySelector('.excursions__field-input');
+const addToChartBtn = document.querySelectorAll('.excursions__field-input');
 console.log(addToChartBtn);
     //utworzenie elementów w html i wyświetlenie w koszyku
 
