@@ -102,7 +102,7 @@ function createPrototype(obj) { // copyPrototype
     const form = document.querySelector('form');
     console.log(form);
 
-    form.addEventListener('submit', function(event) { // sprawdź ad3
+    form.addEventListener('submit', function(event) { 
         event.preventDefault();
         console.log('ok');
         // const userInput = event.target.value;
