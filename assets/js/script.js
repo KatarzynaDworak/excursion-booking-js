@@ -41,8 +41,8 @@ function handleFile(event) {
                 // console.log(excursionObj);
                 
                 createPrototype(excursionObj);
-                createBasket(excursionObj) // 2 tablice, w kazdej 1 obiekt
-                placeOrder();
+                // createBasket(excursionObj) // 2 tablice, w kazdej 1 obiekt
+                // placeOrder();
             })
         } 
     }
@@ -76,40 +76,37 @@ function createPrototype(obj) { // copyPrototype
     // console.log('LiList => ', LiList);
 
     // CENY WYCIECZEK 
-    const newElements = document.querySelectorAll('.excursions__price');
-    // console.log('newElements => ', newElements);
+    const priceElements = newLi.querySelectorAll('.excursions__price');
+    console.log('priceElements => ', priceElements);
     // CENA RODZIC 
-    const newPriceAdult = newElements[2].innerText;
+    const priceAdultEl = priceElements[0]; 
+    const priceAdult = parseInt(priceAdultEl.innerText); //99 number
+    // console.log(priceAdult);
     // CENA DZIECKO
-    const newPriceChild = newElements[3].innerText; 
-    // console.log('FirstAdult => ', newPriceAdult, 'FirstChild => ', newPriceChild);
+    const priceChild = parseInt(priceElements[1].innerText); // 50 number
+    // console.log('priceAdult => ', priceAdult, 'priceChild => ', priceChild);
     
+    //** */  DO USUNIĘCIA - NASŁUCHIWANIE NA FORM
     // 2 PRZYCISKI - DODAJ DO ZAMÓWIENIA
-    const submitBtn = newLi.querySelector('.excursions__field-input--submit');
+    // const submitBtn = newLi.querySelector('.excursions__field-input--submit');
     // console.log('submitBtn', submitBtn);
 
     // ROZRÓŻNIAMY PRZYCISKI - DODAJ DO ZAMÓWIENIA - DLA WYCIECZEK Z PLIKU
-    const trips = [];
-    trips.push(excursionName);
+    // const trips = [];
+    // trips.push(excursionName);
     // console.log(trips); // 2 TABLICE KAZDA ZAWIERA 1 POZYCJĘ NAZWĘ WYCIECZKI
     //dla rozróżnienia wycieczek zostały dodane atrybuty data-name='nazwa wycieczki'
-    submitBtn.setAttribute('data-name', trips[0]);
-    // console.log(submitBtn);
-    
-    //nasłuchiwanie na formularz 'dodaj do zamówienia'
-    //formularz 1
-    const submitFormName1 = newLi.querySelector('input[data-name="Ogrodzieniec"]');
-    console.log('przycisk dodaj do zamówienia Ogrodzieniec => ', submitFormName1);
-    //formularz 2
-    const submitFormName2 = newLi.querySelector('input[data-name="Ojców"]');
-    console.log('przycisk dodaj do zamówienia Ojców => ', submitFormName1);
-    
-    if(submitFormName1) {
-        submitFormName1.addEventListener('submit', addToSummary);
-    } 
-    if(submitFormName2) {
-        submitFormName2.addEventListener('submit', addToSummary);
-    }
+    // **
+
+    //NASŁUCHIWANIE NA FORM
+    const form = document.querySelector('form');
+    console.log(form);
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+        console.log('ok');
+        // const userInput = event.target.value;
+    })
    
     // // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
     // userInputList[1].value;
@@ -159,22 +156,22 @@ function addToSummary(event, priceAdult, priceChild) {
 }
 
 
-function createBasket(obj) {
+// function createBasket(obj) {
 
-    const basket = [];
-    basket.push(obj);
+//     const basket = [];
+//     basket.push(obj);
 
-    const excursionAddBtn = document.querySelector('.excursions__field-input--submit') 
-    // console.log(excursionAddBtn); //btn liElement
+//     const excursionAddBtn = document.querySelector('.excursions__field-input--submit') 
+//     // console.log(excursionAddBtn); //btn liElement
 
-}
+// }
 
-function placeOrder() {
-    const submitBtn = document.querySelector('.order__field-submit'); //ok
-    console.log(submitBtn);
+// function placeOrder() {
+//     const submitBtn = document.querySelector('.order__field-submit'); //ok
+//     console.log(submitBtn);
 
-    submitBtn.addEventListener('submit', function() {
-        alert('Dziękujemy za złożenie zamówienia. Potwierdzenie zamówienia zostanie wysłanie mailem.')
-    })
+//     submitBtn.addEventListener('submit', function() {
+//         alert('Dziękujemy za złożenie zamówienia. Potwierdzenie zamówienia zostanie wysłanie mailem.')
+//     })
 
-}
+// }
