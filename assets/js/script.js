@@ -48,43 +48,66 @@ function handleFile(event) {
     }
 }
 
-// KONSULTACJE: jak UKRYĆ pierwsze <li>?
 const liElement = document.querySelector('li');
 liElement.style.display = 'none';
 
-function createPrototype(obj) {
+function createPrototype(obj) { // copyPrototype
 
     const newLi = document.querySelector('.excursions__item--prototype').cloneNode(true);
-    newLi.style.display = '';
-    // console.log(newLi); //2 newLi
+    newLi.style.display = 'block';
+    newLi.classList.add('excursions__item--trip');
     
+    //NAZWA WYCIECZKI
     const newTitle = newLi.querySelector('.excursions__title');
     newTitle.innerText = obj['name'];
     newTitle.dataset.name = obj.name; //ok atrybut data-name = nazwa wycieczki dodany
-    const excursionName = obj.name; //NAME
+    const excursionName = obj.name; //NAZWA WYCIECZKI Ogrodzieniec Ojców
+    // console.log('excursionName => ', excursionName);
     
+    //OPIS WYCIECZKI
     const newDescription = newLi.querySelector('.excursions__description');
     newDescription.innerText = obj['description']; //DZIAŁA
+    // console.log('newDescription => ', newDescription);
     
     ulElement.appendChild(newLi);
     
+    //2 OBIEKTY - OBIE WYCIECZKI - 2 RAMKI
+    const LiList = document.querySelectorAll('.excursions__item--trip');
+    // console.log('LiList => ', LiList);
+
+    // CENY WYCIECZEK 
     const newElements = document.querySelectorAll('.excursions__price');
-    // console.log(newElements);
-
-    const newPriceAdult = newElements[0];
+    // console.log('newElements => ', newElements);
+    // CENA RODZIC 
+    const newPriceAdult = newElements[2].innerText;
+    // CENA DZIECKO
+    const newPriceChild = newElements[3].innerText; 
+    // console.log('FirstAdult => ', newPriceAdult, 'FirstChild => ', newPriceChild);
     
-    const newPriceChild = newElements[1]; 
+    // 2 PRZYCISKI - DODAJ DO ZAMÓWIENIA
+    const submitBtn = newLi.querySelector('.excursions__field-input--submit');
+    // console.log('submitBtn', submitBtn);
 
-    // console.log('adult =>', newPriceAdult, 'child=>', newPriceChild);
+    // ROZRÓŻNIAMY PRZYCISKI - DODAJ DO ZAMÓWIENIA - DLA WYCIECZEK Z PLIKU
+    const trips = [];
+    trips.push(excursionName);
+    // console.log(trips); // 2 TABLICE KAZDA ZAWIERA 1 POZYCJĘ NAZWĘ WYCIECZKI
+    //dla rozróżnienia wycieczek zostały dodane atrybuty data-name='nazwa wycieczki'
+    submitBtn.setAttribute('data-name', trips[0]);
+    // console.log(submitBtn);
+
+    // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
+    userInputList[1].value;
+    // wpisana ilość rodziców
+    userInputList[0].value;
     
-    const submitBtn = document.querySelector('li > form > div > input');
-    // console.log(submitBtn); 
-
-    //ETAPY:
-    // 1. co potrzebne? 
+    //PROTOTYP SUMMARY
     const summaryElement = document.querySelector('.summary__item--prototype').cloneNode(true);
-    console.log(summaryElement);
-    // nazwa wycieczki
+    // console.log(summaryElement);
+    
+    //KOLEJNE ETAPY + POTRZEBNE DANE:
+
+    // NAZWA WYCIECZKI DO SUMMARY
     const summaryName = summaryElement.querySelector('.summary__name');
     // console.log(summaryName);
     //dodaję nazwę wycieczki wybranej w klonie w summary
@@ -95,11 +118,7 @@ function createPrototype(obj) {
     //pobieram ilość osób wpisanych w formularzu
     //pobranie userInput z obu inputów
     const userInputList = newLi.querySelectorAll('.excursions__field-input');
-    console.log(userInputList);
-    // wpisana ilość dzieci
-    userInputList[1].value;
-    // wpisana ilość rodziców
-    userInputList[0].value;
+    // console.log(userInputList);
     // submit
     const submitToAdd = userInputList[2];
     //nasłuchiwanie na formularz 'dodaj do zamówienia'
@@ -108,12 +127,12 @@ function createPrototype(obj) {
     // wyliczamy sumę = ilość dorosłych x cena dorosły, ilość dzieci [nasłuchiwanie na submit + to co wpisał uzytkownik e.target.value] x cena dziecko newElements[1]
 
     const addToChartBtn = document.querySelectorAll('.excursions__field-input');
-    console.log(addToChartBtn);
+    // console.log(addToChartBtn);
 }
 
 function addToSummary(event) {
     const numberOfPersonsList = event.target.value;
-    console.log(numberOfPersonsList);
+    // console.log(numberOfPersonsList);
     if('kliknął w 1') {
         //wylicz sumę
         //dodaj pozycję do koszyka
@@ -121,7 +140,7 @@ function addToSummary(event) {
         //wylicz sumę
         //dodaj pozycję do koszyka
     }
-    console.log('tu ma być funkcja, która dodaje wycieczkę do koszyka')
+    // console.log('tu ma być funkcja, która dodaje wycieczkę do koszyka')
 }
 
 
@@ -131,7 +150,7 @@ function createBasket(obj) {
     basket.push(obj);
 
     const excursionAddBtn = document.querySelector('.excursions__field-input--submit') 
-    console.log(excursionAddBtn); //btn liElement
+    // console.log(excursionAddBtn); //btn liElement
 
 }
 
