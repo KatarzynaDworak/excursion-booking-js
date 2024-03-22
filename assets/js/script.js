@@ -95,12 +95,29 @@ function createPrototype(obj) { // copyPrototype
     //dla rozróżnienia wycieczek zostały dodane atrybuty data-name='nazwa wycieczki'
     submitBtn.setAttribute('data-name', trips[0]);
     // console.log(submitBtn);
-
-    // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
-    userInputList[1].value;
-    // wpisana ilość rodziców
-    userInputList[0].value;
     
+    //nasłuchiwanie na formularz 'dodaj do zamówienia'
+    //formularz 1
+    const submitFormName1 = newLi.querySelector('input[data-name="Ogrodzieniec"]');
+    console.log('przycisk dodaj do zamówienia Ogrodzieniec => ', submitFormName1);
+    //formularz 2
+    const submitFormName2 = newLi.querySelector('input[data-name="Ojców"]');
+    console.log('przycisk dodaj do zamówienia Ojców => ', submitFormName1);
+    
+    if(submitFormName1) {
+        submitFormName1.addEventListener('submit', addToSummary);
+    } 
+    if(submitFormName2) {
+        submitFormName2.addEventListener('submit', addToSummary);
+    }
+   
+    // // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
+    // userInputList[1].value;
+    // // wpisana ilość rodziców
+    // userInputList[0].value;
+    
+
+
     //PROTOTYP SUMMARY
     const summaryElement = document.querySelector('.summary__item--prototype').cloneNode(true);
     // console.log(summaryElement);
@@ -121,8 +138,6 @@ function createPrototype(obj) { // copyPrototype
     // console.log(userInputList);
     // submit
     const submitToAdd = userInputList[2];
-    //nasłuchiwanie na formularz 'dodaj do zamówienia'
-    submitToAdd.addEventListener('submit', addToSummary);
 
     // wyliczamy sumę = ilość dorosłych x cena dorosły, ilość dzieci [nasłuchiwanie na submit + to co wpisał uzytkownik e.target.value] x cena dziecko newElements[1]
 
@@ -130,16 +145,16 @@ function createPrototype(obj) { // copyPrototype
     // console.log(addToChartBtn);
 }
 
-function addToSummary(event) {
-    const numberOfPersonsList = event.target.value;
-    // console.log(numberOfPersonsList);
-    if('kliknął w 1') {
-        //wylicz sumę
-        //dodaj pozycję do koszyka
-    } else if('kliknął w 2') {
-        //wylicz sumę
-        //dodaj pozycję do koszyka
-    }
+function addToSummary(event, priceAdult, priceChild) {
+    event.preventDefault();
+    const numberOfAdults = event.target.value;
+    console.log(event.target.value);
+    const numberOfChild = event.target.value;
+    console.log(numberOfAdults);
+    //wylicz sumę
+    const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
+    //dodaj pozycję do koszyka
+
     // console.log('tu ma być funkcja, która dodaje wycieczkę do koszyka')
 }
 
