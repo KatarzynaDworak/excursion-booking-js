@@ -1,7 +1,3 @@
-// KONSULTACJE
-//1. /FUNKCJA - linia 100 - powoduje BŁĄD lub gdzieś jest błąd, który powoduje, 
-//ze znikają wycieczki po kliknięciu w 'dodaj do zamówienia'
-// 2. jak poukładać callbacki np linia 116, 122 (funkcje nie zostały wywołane jeszcze)
 
 // const txt = `"1","Ogrodzieniec","Zamek Ogrodzieniec – ruiny zamku leżącego na Jurze Krakowsko-Częstochowskiej, wybudowanego w systemie tzw. Orlich Gniazd, we wsi Podzamcze w województwie śląskim, w powiecie zawierciańskim, około 2 km na wschód od Ogrodzieńca. Zamek został wybudowany w XIV – XV w. przez ród Włodków Sulimczyków.","99PLN","50PLN"
 // "2","Ojców","wieś w województwie małopolskim, w powiecie krakowskim, w gminie Skała, na terenie Wyżyny Krakowsko-Częstochowskiej, w Dolinie Prądnika, na Szlaku Orlich Gniazd. W Królestwie Polskim istniała gmina Ojców. W latach 1975–1998 miejscowość położona była w województwie krakowskim. W latach 1928–1966 Ojców miał status uzdrowiska posiadającego charakter użyteczności publicznej.","40PLN","15PLN`;
@@ -90,21 +86,40 @@ function createPrototype(obj) { // copyPrototype
     // console.log('priceAdult => ', priceAdult, 'priceChild => ', priceChild);
 
     //NASŁUCHIWANIE NA FORM
-    const form = document.querySelector('form');
+    const form = document.querySelectorAll('form');
     console.log(form);
 
-    form.addEventListener('submit', getUserInput);
+    form[1].addEventListener('submit', getUserInput);
 }
 
-//FUNKCJA powoduje BŁĄD lub gdzieś jest błąd, który powoduje, e znikają wycieczki po kliknięciu w 'dodaj do zamówienia'
 function getUserInput(event) {
     event.preventDefault();
     console.log('ok');
     
-    const userInput = event.target.value; //array?
-    const numberOfChild = parseInt(userInput[1]);
-    const numberOfAdults = parseInt(userInput[0]);
-    console.log('number adults => ', numberOfAdults, 'number childs => ', numberOfChild)
+    const userInput = event.target; 
+    console.log(userInput);
+
+    const arr = Array.from(userInput.querySelectorAll('input'));
+    
+
+    const newArr = arr.filter(function(el) {
+        if(el.getAttribute('name') && el.value) {
+    console.log(el);
+    return el;
+        }
+    }).map(function(el) {
+        return el.value;
+    })
+    console.log(newArr); // zamienić na liczby
+
+    // newArr.forEach(function (el) {
+    //     return el.value;
+    // });
+
+
+    // const numberOfChild = parseInt(userInput[1]);
+    // const numberOfAdults = parseInt(userInput[0]);
+    // console.log('number adults => ', numberOfAdults, 'number childs => ', numberOfChild)
 
     // // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
     // userInputList[1].value;
