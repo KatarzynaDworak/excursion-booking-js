@@ -131,7 +131,7 @@ function getPrice(newLi) {
 }
 
 // funkcja OBLICZAMY SUMĘ KOSZTOW DLA WYBRANEJ WYCIECZKI - BŁĄD
-function getSum() { // wpisać event?
+function getSum(event) { //nie działa take bez wpisanego eventu
     event.preventDefault();
     let [numberOfAdults, numberOfChild] = getUserInput(event);
     let [priceAdult, priceChild] = getPrice(event);
