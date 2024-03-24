@@ -106,6 +106,11 @@ function getUserInput(event) {
     return [numberOfAdults, numberOfChild];
 }
 
+// funkcja POBIERZ NAZWĘ
+function getName() {
+    
+}
+
 // funkcja POBIERZ CENĘ
 function getPrice(newLi) {
     const priceElements = newLi.querySelectorAll('.excursions__price');
@@ -121,7 +126,6 @@ function getPrice(newLi) {
     return [priceAdult, priceChild];
 }
 
-
 // funkcja OBLICZ SUMĘ - BŁĄD
 function getSum() {
     // let [numberOfAdults, numberOfChild] = getUserInput();
@@ -133,7 +137,7 @@ function getSum() {
 }
 
 //funkcja STWÓRZ SUMMARY
-function createSummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult, priceChild) {
+function copySummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult, priceChild) {
     // const basket = [];
     // basket.push(trip);
     const summaryPanel = document.querySelector('.panel__summary');
@@ -146,21 +150,33 @@ function createSummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult
     summaryPanel.appendChild(newSummaryElement);
     console.log(summaryPanel);
 
-    //DODAJĘ WYCIECZKI DO SUMMARY
-    // DODAJĘ TYTUŁ
-    const summaryName = newSummaryElement.querySelector('.summary__name');
-    summaryName.innerText = tripName;
-
-    //DODAJĘ SUMĘ DO SUMMARY
-    const totalPrice = newSummaryElement.querySelector('.summary__total-price');
-    totalPrice.innerText = sum + 'PLN'; // czy to się połączy na np. 199PLN?
-
-    // DODAJĘ ILOŚĆ DOROSŁYCH I DZIECI
-    const summaryPrice = newSummaryElement.querySelector('.summary__prices');
-    summaryPrice.innerText = 'dorośli: ' + numberOfAdults + ' x ' + priceAdult + ' PLN ' + ' , dzieci: ' + numberOfChild + ' x ' + priceChild + 'PLN';
-
+    let sum = getSum();
+    let tripName = getName(); //stworzyć funkcję pobierającą nazwę
+    addTrips(tripName);
+    addSum(sum);
+    addValuesToSummary()
+    
     //DODAJĘ SUMĘ DO PANEL ORDER
     const panelOrder = document.querySelector('.panel__order');
     const orderTotalPriceValue = panelOrder.querySelector('.order__total-price-value');
     orderTotalPriceValue.innerText = totalPrice + 'PLN';
+}
+
+function addTrips(tripName) {
+    //DODAJĘ WYCIECZKI DO SUMMARY
+    // DODAJĘ TYTUŁ
+    const summaryName = newSummaryElement.querySelector('.summary__name');
+    summaryName.innerText = tripName;
+}
+
+function addSum(sum) {
+    //DODAJĘ SUMĘ DO SUMMARY
+    const totalPrice = newSummaryElement.querySelector('.summary__total-price');
+    totalPrice.innerText = sum + 'PLN'; // czy to się połączy na np. 199PLN?
+}
+
+function addValuesToSummary(numberOfAdults, priceAdult, numberOfChild, priceChild) {
+    // DODAJĘ ILOŚĆ DOROSŁYCH I DZIECI
+    const summaryPrice = newSummaryElement.querySelector('.summary__prices');
+    summaryPrice.innerText = 'dorośli: ' + numberOfAdults + ' x ' + priceAdult + ' PLN ' + ' , dzieci: ' + numberOfChild + ' x ' + priceChild + 'PLN';
 }
