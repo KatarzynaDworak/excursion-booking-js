@@ -115,16 +115,6 @@ function getUserInput(event) {
     return [numberOfAdults, numberOfChild];
 }
 
-// funkcja POBIERAMY NAZWĘ WYBRANEJ WYCIECZKI
-function getName(event) {
-    event.preventDefault();
-    
-    let tripName = event.target.previousElementSibling.querySelector('h2').innerText; 
-    // console.log( 'nazwa=> ', tripName); 
-    
-    return tripName;
-}
-
 // funkcja POBIERAMY CENĘ WYBRANEJ WYCIECZKI
 function getPrice(newLi) {
     const priceElements = newLi.querySelectorAll('.excursions__price');
@@ -141,15 +131,26 @@ function getPrice(newLi) {
 }
 
 // funkcja OBLICZAMY SUMĘ KOSZTOW DLA WYBRANEJ WYCIECZKI - BŁĄD
-function getSum() { // wpisać event
-    // event.preventDefault();
-    // let [numberOfAdults, numberOfChild] = getUserInput(event);
-    // let [priceAdult, priceChild] = getPrice(event);
-    // const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
-    const sum = 20;
+function getSum() { // wpisać event?
+    event.preventDefault();
+    let [numberOfAdults, numberOfChild] = getUserInput(event);
+    let [priceAdult, priceChild] = getPrice(event);
+    const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
+    // const sum = 20;
     console.log(sum);
     return sum;
 }
+
+// funkcja POBIERAMY NAZWĘ WYBRANEJ WYCIECZKI
+function getName(event) {
+    event.preventDefault();
+    
+    let tripName = event.target.previousElementSibling.querySelector('h2').innerText; 
+    // console.log( 'nazwa=> ', tripName); 
+    
+    return tripName;
+}
+
 
 //funkcja TWORZYMY NOWE SUMMARY
 function createSummary(event) {
