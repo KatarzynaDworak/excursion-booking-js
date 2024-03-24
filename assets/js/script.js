@@ -1,10 +1,14 @@
 // BŁĘDY:
-// 1. pobiera się 2x Ogrodzieniec, a nie pobiera się Ojców
-// 2. funkcja getSum()
+// 1. BŁĄD pobiera się 2x Ogrodzieniec, a nie pobiera się Ojców
+// 2. BŁĄD funkcja getSum() (wpisałam tymczasowo sum = 20 aby pracować dalej, ale funkcja nie przelicza, 
+// poniewaz potrzebuje danych z getUserInput & getPrice, a uruchamiając je wyskakują błędy z preventDefault)
+// 3. gdzie wywołać funkcję createSummary? Potrzebuję pobrać nazwę, pobrać ilość osób, policzyć sumę 
+// i wykorzystać ją w summary. To wszystko się dzieję po evencie 'submit' 'dodaj do zamówienia'
+
 const txt = `"1","Ogrodzieniec","Zamek Ogrodzieniec – ruiny zamku leżącego na Jurze Krakowsko-Częstochowskiej, wybudowanego w systemie tzw. Orlich Gniazd, we wsi Podzamcze w województwie śląskim, w powiecie zawierciańskim, około 2 km na wschód od Ogrodzieńca. Zamek został wybudowany w XIV – XV w. przez ród Włodków Sulimczyków.","99PLN","50PLN"
 "2","Ojców","wieś w województwie małopolskim, w powiecie krakowskim, w gminie Skała, na terenie Wyżyny Krakowsko-Częstochowskiej, w Dolinie Prądnika, na Szlaku Orlich Gniazd. W Królestwie Polskim istniała gmina Ojców. W latach 1975–1998 miejscowość położona była w województwie krakowskim. W latach 1928–1966 Ojców miał status uzdrowiska posiadającego charakter użyteczności publicznej.","40PLN","15PLN`;
 
-console.log( txt.split(/[\r\n]+/gm) );
+// console.log( txt.split(/[\r\n]+/gm) );
 
 const inputElement = document.querySelector('input[type="file"]');
 // console.log(inputElement);
@@ -12,7 +16,7 @@ const inputElement = document.querySelector('input[type="file"]');
 const ulElement = document.querySelector('.excursions');
 // console.log(ulElement);
 
-// POBIERAMY I WCZYTUJEMY PLIK
+// POBIERAMY I WCZYTUJEMY PLIK - DZIAŁA
 inputElement.addEventListener('change', handleFile);
 function handleFile(event) {
     const file = event.target.files[0];
@@ -51,6 +55,7 @@ function handleFile(event) {
 const liElement = document.querySelector('li');
 liElement.style.display = 'none';
 
+//TWORZYMY KOPIĘ PROTOTYPU WYCIECZKI I DODAJEMY DO NIEJ WCZYTANE WYCIECZKI
 function copyPrototype(obj) { 
     // console.log(obj);
 
@@ -74,10 +79,13 @@ function copyPrototype(obj) {
     
     forms.map(function(form) {
         form.addEventListener('submit', getUserInput);
+        form.addEventListener('submit', getName);
+        // form.addEventListener('submit', getSum);
+        // form.addEventListener('submit', createSummary);
     })
 }
 
-//funkcja POBIERZ WPISANE PRZEZ UŻYTKOWNIKA ILOŚCI RODZICÓW I DZIECI
+//funkcja POBIERAMY WPISANE PRZEZ UŻYTKOWNIKA ILOŚCI RODZICÓW I DZIECI
 function getUserInput(event) {
     event.preventDefault();
 
@@ -102,16 +110,22 @@ function getUserInput(event) {
     const numberOfAdults = newArr[0]; //2
 
     console.log('number adults => ', numberOfAdults, 'number childs => ', numberOfChild) // 1 2
-    getSum();
+    getSum(event);
+    
     return [numberOfAdults, numberOfChild];
 }
 
-// funkcja POBIERZ NAZWĘ
-function getName() {
+// funkcja POBIERAMY NAZWĘ WYBRANEJ WYCIECZKI
+function getName(event) {
+    event.preventDefault();
     
+    let tripName = event.target.previousElementSibling.querySelector('h2').innerText; 
+    // console.log( 'nazwa=> ', tripName); 
+    
+    return tripName;
 }
 
-// funkcja POBIERZ CENĘ
+// funkcja POBIERAMY CENĘ WYBRANEJ WYCIECZKI
 function getPrice(newLi) {
     const priceElements = newLi.querySelectorAll('.excursions__price');
     // console.log('priceElements => ', priceElements);
@@ -126,20 +140,33 @@ function getPrice(newLi) {
     return [priceAdult, priceChild];
 }
 
-// funkcja OBLICZ SUMĘ - BŁĄD
-function getSum() {
-    // let [numberOfAdults, numberOfChild] = getUserInput();
-    // let [priceAdult, priceChild] = getPrice();
+// funkcja OBLICZAMY SUMĘ KOSZTOW DLA WYBRANEJ WYCIECZKI - BŁĄD
+function getSum() { // wpisać event
+    // event.preventDefault();
+    // let [numberOfAdults, numberOfChild] = getUserInput(event);
+    // let [priceAdult, priceChild] = getPrice(event);
     // const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
     const sum = 20;
     console.log(sum);
     return sum;
 }
 
-//funkcja STWÓRZ SUMMARY
-function copySummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult, priceChild) {
-    // const basket = [];
-    // basket.push(trip);
+//funkcja TWORZYMY NOWE SUMMARY
+function createSummary(event) {
+    // getUserInput(event);
+    // getName(event);
+
+    copySummary();
+    let sum = getSum();
+    let tripName = getName();
+    addTrips(tripName);
+    addSum(sum);
+    addValuesToSummary()
+    addSumFinalization();
+}
+
+// funkcja TWORZYMY KOPIĘ PROTOTYPU SUMMARY
+function copySummary() {
     const summaryPanel = document.querySelector('.panel__summary');
     const summaryElement = document.querySelector('.summary__item--prototype');
     summaryElement.style.display = 'none';
@@ -149,34 +176,35 @@ function copySummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult, 
     
     summaryPanel.appendChild(newSummaryElement);
     console.log(summaryPanel);
+}
 
-    let sum = getSum();
-    let tripName = getName(); //stworzyć funkcję pobierającą nazwę
-    addTrips(tripName);
-    addSum(sum);
-    addValuesToSummary()
-    
+//funkcja DODAJEMY WYCIECZKI DO SUMMARY
+function addTrips(tripName) {
+    // DODAJĘ TYTUŁ
+    const summaryName = newSummaryElement.querySelector('.summary__name');
+    summaryName.innerText = tripName;
+}
+
+//funkcja DODAJEMY SUMĘ DO SUMMARY
+function addSum(sum) {
+    const totalPrice = newSummaryElement.querySelector('.summary__total-price');
+    totalPrice.innerText = sum + 'PLN'; // czy to się połączy na np. 199PLN?
+    return totalPrice;
+}
+
+// funkcja DODAJEMY SUMĘ DO REALIZACJI ZAMOWIENIA
+function addSumFinalization() {
+    let totalPrice = addSum();
     //DODAJĘ SUMĘ DO PANEL ORDER
     const panelOrder = document.querySelector('.panel__order');
     const orderTotalPriceValue = panelOrder.querySelector('.order__total-price-value');
     orderTotalPriceValue.innerText = totalPrice + 'PLN';
 }
 
-function addTrips(tripName) {
-    //DODAJĘ WYCIECZKI DO SUMMARY
-    // DODAJĘ TYTUŁ
-    const summaryName = newSummaryElement.querySelector('.summary__name');
-    summaryName.innerText = tripName;
-}
 
-function addSum(sum) {
-    //DODAJĘ SUMĘ DO SUMMARY
-    const totalPrice = newSummaryElement.querySelector('.summary__total-price');
-    totalPrice.innerText = sum + 'PLN'; // czy to się połączy na np. 199PLN?
-}
-
-function addValuesToSummary(numberOfAdults, priceAdult, numberOfChild, priceChild) {
-    // DODAJĘ ILOŚĆ DOROSŁYCH I DZIECI
-    const summaryPrice = newSummaryElement.querySelector('.summary__prices');
-    summaryPrice.innerText = 'dorośli: ' + numberOfAdults + ' x ' + priceAdult + ' PLN ' + ' , dzieci: ' + numberOfChild + ' x ' + priceChild + 'PLN';
-}
+// NIE JEST POTRZEBNA, BO TWORZYMY KOPIĘ
+// function addValuesToSummary(numberOfAdults, priceAdult, numberOfChild, priceChild) {
+//     // TWORZĘ SUMMARY
+//     const summaryPrice = newSummaryElement.querySelector('.summary__prices');
+//     summaryPrice.innerText = 'dorośli: ' + numberOfAdults + ' x ' + priceAdult + ' PLN ' + ' , dzieci: ' + numberOfChild + ' x ' + priceChild + 'PLN';
+// }
