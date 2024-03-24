@@ -39,9 +39,9 @@ function handleFile(event) {
                 const priceChild = excursion[4];
 
                 const excursionObj = {id, name, description, priceAdult, priceChild}; // każda wycieczka to obiekt
-                // console.log(excursionObj);
+                console.log(excursionObj);
                 
-                createPrototype(excursionObj);
+                copyPrototype(excursionObj);
                 // createBasket(excursionObj) // 2 tablice, w kazdej 1 obiekt
                 // placeOrder();
             })
@@ -52,40 +52,22 @@ function handleFile(event) {
 const liElement = document.querySelector('li');
 liElement.style.display = 'none';
 
-function createPrototype(obj) { // copyPrototype
+function copyPrototype(obj) { 
+    console.log(obj);
 
     const newLi = document.querySelector('.excursions__item--prototype').cloneNode(true);
+    console.log(newLi);
     newLi.style.display = 'block';
     newLi.classList.add('excursions__item--trip');
     
-    //NAZWA WYCIECZKI
-    const newTitle = newLi.querySelector('.excursions__title');
-    newTitle.innerText = obj['name'];
-    newTitle.dataset.name = obj.name; //ok atrybut data-name = nazwa wycieczki dodany
-    const excursionName = obj.name; //NAZWA WYCIECZKI Ogrodzieniec Ojców
-    // console.log('excursionName => ', excursionName);
-    
-    //OPIS WYCIECZKI
-    const newDescription = newLi.querySelector('.excursions__description');
-    newDescription.innerText = obj['description']; //DZIAŁA
-    // console.log('newDescription => ', newDescription);
+    // POBIERAMY CENY
+    getPrice(newLi);
     
     ulElement.appendChild(newLi);
     
     //2 OBIEKTY - OBIE WYCIECZKI - 2 RAMKI
     const LiList = document.querySelectorAll('.excursions__item--trip');
-    // console.log('LiList => ', LiList);
-
-    // // CENY WYCIECZEK 
-    // const priceElements = newLi.querySelectorAll('.excursions__price');
-    // console.log('priceElements => ', priceElements);
-    // // CENA RODZIC 
-    // const priceAdultEl = priceElements[0]; 
-    // const priceAdult = parseInt(priceAdultEl.innerText); //99 number
-    // // console.log(priceAdult);
-    // // CENA DZIECKO
-    // const priceChild = parseInt(priceElements[1].innerText); // 50 number
-    // // console.log('priceAdult => ', priceAdult, 'priceChild => ', priceChild);
+    console.log('LiList => ', LiList);
     
     //NASŁUCHIWANIE NA FORM
     const forms = Array.from(document.querySelectorAll('.excursions__item--trip form'));
@@ -94,10 +76,9 @@ function createPrototype(obj) { // copyPrototype
     forms.map(function(form) {
         form.addEventListener('submit', getUserInput);
     })
-    
-    getPrice(newLi);
 }
 
+//funkcja POBIERZ WPISANE PRZEZ UŻYTKOWNIKA ILOŚCI RODZICÓW I DZIECI
 function getUserInput(event) {
     event.preventDefault();
 
@@ -145,7 +126,7 @@ function getSum(priceAdult, numberOfAdults, priceChild, numberOfChild) {
     return sum;
 }
 
-//funkcja nie została wywołana
+//funkcja STWÓRZ SUMMARY
 function createSummary(trip, tripName, numberOfAdults, numberOfChild, priceAdult, priceChild) {
     // const basket = [];
     // basket.push(trip);
