@@ -1,6 +1,6 @@
-// 1. funkcja ma mieć jedną odpowiedzialność
-// 2. unikamy globalThis
-// 3. formatowanie kodu
+// BŁĘDY:
+// 1. pobiera się 2x Ogrodzieniec, a nie pobiera się Ojców
+// 2. funkcja getSum()
 const txt = `"1","Ogrodzieniec","Zamek Ogrodzieniec – ruiny zamku leżącego na Jurze Krakowsko-Częstochowskiej, wybudowanego w systemie tzw. Orlich Gniazd, we wsi Podzamcze w województwie śląskim, w powiecie zawierciańskim, około 2 km na wschód od Ogrodzieńca. Zamek został wybudowany w XIV – XV w. przez ród Włodków Sulimczyków.","99PLN","50PLN"
 "2","Ojców","wieś w województwie małopolskim, w powiecie krakowskim, w gminie Skała, na terenie Wyżyny Krakowsko-Częstochowskiej, w Dolinie Prądnika, na Szlaku Orlich Gniazd. W Królestwie Polskim istniała gmina Ojców. W latach 1975–1998 miejscowość położona była w województwie krakowskim. W latach 1928–1966 Ojców miał status uzdrowiska posiadającego charakter użyteczności publicznej.","40PLN","15PLN`;
 
@@ -12,6 +12,7 @@ const inputElement = document.querySelector('input[type="file"]');
 const ulElement = document.querySelector('.excursions');
 // console.log(ulElement);
 
+// POBIERAMY I WCZYTUJEMY PLIK
 inputElement.addEventListener('change', handleFile);
 function handleFile(event) {
     const file = event.target.files[0];
@@ -39,11 +40,9 @@ function handleFile(event) {
                 const priceChild = excursion[4];
 
                 const excursionObj = {id, name, description, priceAdult, priceChild}; // każda wycieczka to obiekt
-                console.log(excursionObj);
+                // console.log(excursionObj);
                 
                 copyPrototype(excursionObj);
-                // createBasket(excursionObj) // 2 tablice, w kazdej 1 obiekt
-                // placeOrder();
             })
         } 
     }
@@ -53,10 +52,10 @@ const liElement = document.querySelector('li');
 liElement.style.display = 'none';
 
 function copyPrototype(obj) { 
-    console.log(obj);
+    // console.log(obj);
 
     const newLi = document.querySelector('.excursions__item--prototype').cloneNode(true);
-    console.log(newLi);
+    // console.log(newLi);
     newLi.style.display = 'block';
     newLi.classList.add('excursions__item--trip');
     
@@ -67,11 +66,11 @@ function copyPrototype(obj) {
     
     //2 OBIEKTY - OBIE WYCIECZKI - 2 RAMKI
     const LiList = document.querySelectorAll('.excursions__item--trip');
-    console.log('LiList => ', LiList);
+    // console.log('LiList => ', LiList);
     
     //NASŁUCHIWANIE NA FORM
     const forms = Array.from(document.querySelectorAll('.excursions__item--trip form'));
-    console.log(forms); // 
+    // console.log(forms); // 
     
     forms.map(function(form) {
         form.addEventListener('submit', getUserInput);
@@ -89,13 +88,13 @@ function getUserInput(event) {
     
     const newArr = arr.filter(function(el) {
         if(el.getAttribute('name') && el.value) {
-    console.log(el);
+    // console.log(el);
     return el; 
         }
     }).map(function(el) {
         return parseInt(el.value);
     })
-    console.log(newArr); // 1 2
+    // console.log(newArr); // 1 2
 
     // WPISANA PRZEZ UŻYTKOWNIKA ilość dzieci
     const numberOfChild = newArr[1]; //1
@@ -103,13 +102,14 @@ function getUserInput(event) {
     const numberOfAdults = newArr[0]; //2
 
     console.log('number adults => ', numberOfAdults, 'number childs => ', numberOfChild) // 1 2
-    // getSum(priceAdult, numberOfAdults, priceChild, numberOfChild);
+    getSum();
+    return [numberOfAdults, numberOfChild];
 }
 
 // funkcja POBIERZ CENĘ
 function getPrice(newLi) {
     const priceElements = newLi.querySelectorAll('.excursions__price');
-    console.log('priceElements => ', priceElements);
+    // console.log('priceElements => ', priceElements);
     // CENA RODZIC 
     const priceAdultEl = priceElements[0]; 
     const priceAdult = parseInt(priceAdultEl.innerText); //99 number
@@ -117,12 +117,18 @@ function getPrice(newLi) {
     // CENA DZIECKO
     const priceChild = parseInt(priceElements[1].innerText); // 50 number
     console.log('priceAdult => ', priceAdult, 'priceChild => ', priceChild);
+    
+    return [priceAdult, priceChild];
 }
 
 
-//funkcja OBLICZ SUMĘ nie została wywołana
-function getSum(priceAdult, numberOfAdults, priceChild, numberOfChild) {
-    const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
+// funkcja OBLICZ SUMĘ - BŁĄD
+function getSum() {
+    // let [numberOfAdults, numberOfChild] = getUserInput();
+    // let [priceAdult, priceChild] = getPrice();
+    // const sum = (priceAdult * numberOfAdults) + (priceChild * numberOfChild);
+    const sum = 20;
+    console.log(sum);
     return sum;
 }
 
