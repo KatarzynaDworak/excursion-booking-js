@@ -104,7 +104,7 @@ function handleSubmit(event) {
 
     // const newFinalChart = finalChart.cloneNode(true); // BŁĄD: DODAJĄ SIĘ KLONY KAZDEJ WYCIECZKI
     // newFinalChart.innerText = '';
-    // newFinalChart.innerText += sum + 'PLN'; // BŁĄD: KADA SUMA WYCIECZKI DODAJE SIĘ W OSOBNYM KLONIE - BRAK CAŁKOWITEJ SUMY
+    // newFinalChart.innerText += sum + 'PLN'; // BŁĄD: KAZDA SUMA WYCIECZKI DODAJE SIĘ W OSOBNYM KLONIE - BRAK CAŁKOWITEJ SUMY
     // orderTotalPrice.appendChild(newFinalChart);
     // newFinalChart.style.display = 'block';
 
