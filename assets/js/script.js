@@ -1,9 +1,16 @@
-//DO POPRAWY - linie 100 - w całkowitej sumie wpisuje sumę ostatniej wycieczki, a nie dodaje sum wszystkich wycieczek
+//DZIAŁA
 
 const txt = `"1","Ogrodzieniec","Zamek Ogrodzieniec – ruiny zamku leżącego na Jurze Krakowsko-Częstochowskiej, wybudowanego w systemie tzw. Orlich Gniazd, we wsi Podzamcze w województwie śląskim, w powiecie zawierciańskim, około 2 km na wschód od Ogrodzieńca. Zamek został wybudowany w XIV – XV w. przez ród Włodków Sulimczyków.","99PLN","50PLN"
 "2","Ojców","wieś w województwie małopolskim, w powiecie krakowskim, w gminie Skała, na terenie Wyżyny Krakowsko-Częstochowskiej, w Dolinie Prądnika, na Szlaku Orlich Gniazd. W Królestwie Polskim istniała gmina Ojców. W latach 1975–1998 miejscowość położona była w województwie krakowskim. W latach 1928–1966 Ojców miał status uzdrowiska posiadającego charakter użyteczności publicznej.","40PLN","15PLN`;
 
 // console.log( txt.split(/[\r\n]+/gm) );
+
+let totalSum = 0;
+//obliczam całkowitą sumę kosztów
+function calculateTotalPrice() {
+    const totalElement = document.querySelector('.order__total-price-value');
+    totalElement.innerText = totalSum + 'PLN';
+}
 
 const inputElement = document.querySelector('input[type="file"]');
 
@@ -94,14 +101,18 @@ function handleSubmit(event) {
 
     createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum);
 
-    const orderTotalPrice = document.querySelector('.order__total-price');
-    const finalChart = orderTotalPrice.querySelector('.order__total-price-value');
-    finalChart.innerText = '';
-    finalChart.innerText += sum;
+    //dodanie całkowitej sumy
+    totalSum += sum;
+    calculateTotalPrice();
+
+    // const orderTotalPrice = document.querySelector('.order__total-price');
+    // const finalChart = orderTotalPrice.querySelector('.order__total-price-value');
+    // finalChart.innerText = '';
+    // // let finalSum += sum;
+    // finalChart.innerText += finalSum;
     // console.log(finalChart);
     // finalChart.style.display = 'none';
     
-
     // const newFinalChart = finalChart.cloneNode(true); // BŁĄD: DODAJĄ SIĘ KLONY KAZDEJ WYCIECZKI
     // newFinalChart.innerText = '';
     // newFinalChart.innerText += sum + 'PLN'; // BŁĄD: KAZDA SUMA WYCIECZKI DODAJE SIĘ W OSOBNYM KLONIE - BRAK CAŁKOWITEJ SUMY
