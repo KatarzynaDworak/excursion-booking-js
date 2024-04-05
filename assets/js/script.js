@@ -104,24 +104,6 @@ function handleSubmit(event) {
     //dodanie całkowitej sumy
     totalSum += sum;
     calculateTotalPrice();
-
-    // const orderTotalPrice = document.querySelector('.order__total-price');
-    // const finalChart = orderTotalPrice.querySelector('.order__total-price-value');
-    // finalChart.innerText = '';
-    // // let finalSum += sum;
-    // finalChart.innerText += finalSum;
-    // console.log(finalChart);
-    // finalChart.style.display = 'none';
-    
-    // const newFinalChart = finalChart.cloneNode(true); // BŁĄD: DODAJĄ SIĘ KLONY KAZDEJ WYCIECZKI
-    // newFinalChart.innerText = '';
-    // newFinalChart.innerText += sum + 'PLN'; // BŁĄD: KAZDA SUMA WYCIECZKI DODAJE SIĘ W OSOBNYM KLONIE - BRAK CAŁKOWITEJ SUMY
-    // orderTotalPrice.appendChild(newFinalChart);
-    // newFinalChart.style.display = 'block';
-
-    // const totalPrice = document.querySelector('.order__total-price-value').innerText += sum;
-    // newFinalChart.querySelector('.order__total-price-value').innerText = sum + 'PLN';
-    // return sum;
 }
 
 function createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum) {
@@ -135,13 +117,18 @@ function createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum) 
 
     newSummaryElement.querySelector('.summary__name').innerText = tripName;
     
-    //wpisuję sumę do realizacji zamówienia - nie usuwa się obecna kwota 199PLN, pozostałe kwoty dodają się jak stringi
+    //wpisuję sumę do realizacji zamówienia
     const totalPrice = newSummaryElement.querySelector('.summary__total-price').innerText = sum;
 
-    //wyliczamy sumę z wycieczek - BłĄD
-    // const orderTotalPrice = sum;
-    // document.querySelector('.order__total-price-value').innerText = orderTotalPrice + 'PLN';
-    // const orderTotalPrice = document.querySelector('.order__total-price-value').innerText = sum + 'PLN';
+    //usuwam wycieczki
+    const removeBtn = newSummaryElement.querySelector('.summary__btn-remove');
+    removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const totalPrice = parseInt(newSummaryElement.querySelector('.summary__total-price').innerText);
+        totalSum -= totalPrice;
+        calculateTotalPrice();
+        newSummaryElement.remove();
+    });
 
     summaryPanel.appendChild(newSummaryElement);
     // console.log(summaryPanel);
