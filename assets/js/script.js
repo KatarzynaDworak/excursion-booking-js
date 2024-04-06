@@ -133,3 +133,34 @@ function createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum) 
     summaryPanel.appendChild(newSummaryElement);
     // console.log(summaryPanel);
 }
+
+const orderForm = document.querySelector('.order');
+
+orderForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const nameInput = document.querySelector('input[name="name"]');
+    const emailInput = document.querySelector('input[name="email"]');
+
+    const name = nameInput.value.trim();
+    const email = emailInput.value.trim();
+
+    if (name === '' || email === '' || !email.includes('@')) {
+        const errorElement = document.createElement('p');
+        errorElement.innerText = 'Proszę uzupełnić poprawnie wymagane pola';
+        orderForm.appendChild(errorElement);
+    } else {
+        const totalPrice = document.querySelector('.order__total-price-value').innerText;
+        const formattedTotalPrice = totalPrice.replace('PLN', '');
+        alert(`Dziękujemy za złożenie zamówienia o wartości ${formattedTotalPrice} PLN. Szczegóły zamówienia zostały wysłane na adres e-mail: ${email}.`);
+
+        nameInput.value = '';
+        emailInput.value = '';
+
+        const summaryList = document.querySelector('.panel__summary');
+        summaryList.innerHTML = '';
+
+        totalSum = 0;
+        calculateTotalPrice();
+    }
+    })
