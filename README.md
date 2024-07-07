@@ -10,9 +10,13 @@
 
 **1. CSV File Parsing**: implement functionality to read and parse CSV files to dynamically generate content on a web page.
 Dynamic Content Generation:
+
 **2. Automatically create and display excursion details** from parsed data, enhancing user experience with dynamic content rendering.
+
 **3. Interactive Booking System**: develop an interactive booking form that allows users to select excursions, input the number of participants, and view a summary of their selections.
+
 **4. Real-Time Price Calculation**: calculate and display the total price of selected excursions in real-time, ensuring users have clear and accurate pricing information.
+
 **5 Form Validation and Order Processing**: implement form validation to ensure required fields are completed correctly and provide a confirmation message upon successful submission of the order.
 
 <br />
