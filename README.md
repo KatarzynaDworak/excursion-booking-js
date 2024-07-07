@@ -3,7 +3,7 @@
 ![ a main page screenshot](./assets/img/scree.png)
 <br />
 
-## :star: Demonstration of the Project: ([Excursion Booking JS]((https://katarzynadworak.github.io/excursion-booking-js/)))
+## :star: Demonstration of the Project: ([Excursion Booking JS](https://katarzynadworak.github.io/excursion-booking-js/))
 <br />
 
 ## Main goal of my work was to:
