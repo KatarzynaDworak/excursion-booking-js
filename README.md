@@ -1,6 +1,6 @@
 # Thanks for viewing my Project ✨
 
-![ a main page screenshot](./assets/img/scree.png)
+![ a main page screenshot](./screen.png)
 <br />
 
 ## :star: Demonstration of the Project: ([Excursion Booking JS](https://katarzynadworak.github.io/excursion-booking-js/))
