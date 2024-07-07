@@ -1,119 +1,188 @@
+# Thanks for viewing my Project ✨
 
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
+![ a main page screenshot](./assets/img/scree.png)
+<br />
 
-&nbsp;
+## :star: Demonstration of the Project: ([Dynamic Menu Tooltips JS](https://katarzynadworak.github.io/dynamic-menu-tooltips-js/))
+<br />
 
+## Main goal of my work was to:
 
-# JavaScript: Formularze
+**1. CSV File Parsing**: implement functionality to read and parse CSV files to dynamically generate content on a web page.
+Dynamic Content Generation:
+**2. Automatically create and display excursion details** from parsed data, enhancing user experience with dynamic content rendering.
+**3. Interactive Booking System**: develop an interactive booking form that allows users to select excursions, input the number of participants, and view a summary of their selections.
+**4. Real-Time Price Calculation**: calculate and display the total price of selected excursions in real-time, ensuring users have clear and accurate pricing information.
+**5 Form Validation and Order Processing**: implement form validation to ensure required fields are completed correctly and provide a confirmation message upon successful submission of the order.
 
-Zdobyliśmy zlecenie, które zostało porzucone przez poprzedniego programistę. Polega ono na składaniu zamówienia na wycieczki importowane z [pliku CSV](https://pl.wikipedia.org/wiki/CSV_(format_pliku)).
+<br />
 
-Część kodu HTML i CSS już napisano. Naszym zadaniem jest utworzenie logiki i wyglądu. 
+## Solutions provided in the project
+**1. CSV File Parsing and Dynamic Content Generation** 
+The project parses a CSV file and dynamically generates a list of excursions:
 
-To oznacza, że tym razem nie tylko działamy w JavaScripcie, ale musimy też ostylować poszczególne elementy według własnego uznania, aby lepiej się prezentowały.
+            const txt = `"1","Ogrodzieniec","Zamek Ogrodzieniec...","99PLN","50PLN"
+            "2","Ojców","wieś w województwie małopolskim...","40PLN","15PLN"`;
+            
+            // Function to handle file input
+            const inputElement = document.querySelector('input[type="file"]');
+            inputElement.addEventListener('change', handleFile);
+            
+            function handleFile(event) {
+                const file = event.target.files[0];
+                if (file && file.type === 'text/csv') {
+                    const reader = new FileReader();
+                    reader.readAsText(file);
+                    reader.onload = function(readerEvent) {
+                        const contents = readerEvent.target.result;
+                        const offers = contents.split(/[\r\n]+/gm);
+                        offers.forEach(function(offer) {
+                            const excursion = offer.split('\",\"'); 
+                            const excursionObj = {
+                                id: excursion[0], 
+                                name: excursion[1], 
+                                description: excursion[2], 
+                                priceAdult: excursion[3], 
+                                priceChild: excursion[4]
+                            };                 
+                            copyPrototype(excursionObj);
+                        });
+                    };
+                }
+            }
+            
+            // Function to create and append excursion elements
+            function copyPrototype(obj) { 
+                const newLi = document.querySelector('.excursions__item--prototype').cloneNode(true);
+                newLi.style.display = 'block';
+                newLi.classList.add('excursions__item--trip');
+            
+                const title = newLi.querySelector('.excursions__title');
+                const description = newLi.querySelector('.excursions__description');
+                const priceAdult = newLi.querySelector('.excursions__price');
+                title.innerText = obj.name;
+                description.innerText = obj.description;
+                priceAdult.innerText = obj.priceAdult;
+            
+                const ulElement = document.querySelector('.excursions');
+                ulElement.appendChild(newLi);
+            
+                const forms = Array.from(document.querySelectorAll('.excursions__item--trip form'));
+                forms.map(function(form) {
+                    form.addEventListener('submit', handleSubmit);
+                });
+            }
+**2. Interactive Booking System and Real-Time Price Calculation**
+Users can select excursions and the total price is calculated in real-time:
 
-## Wymagania klienta
+            let totalSum = 0;
+            
+            function calculateTotalPrice() {
+                const totalElement = document.querySelector('.order__total-price-value');
+                totalElement.innerText = totalSum + 'PLN';
+            }
+            
+            function handleSubmit(event) {
+                event.preventDefault();
+                const formElement = event.target;
+                const adult = parseInt(formElement.elements[0].value);
+                const child = parseInt(formElement.elements[1].value);
+            
+                const prices = formElement.querySelectorAll('.excursions__price');
+                const adultPrice = parseInt(prices[0].innerText);
+                const childPrice = parseInt(prices[1].innerText);
+            
+                const sum = (adult * adultPrice) + (child * childPrice);
+                const tripName = event.target.previousElementSibling.querySelector('h2').innerText;
+            
+                createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum);
+            
+                totalSum += sum;
+                calculateTotalPrice();
+            }
+            
+            function createSummaryItem(adult, child, adultPrice, childPrice, tripName, sum) {
+                const summaryPanel = document.querySelector('.panel__summary');
+                const summaryElement = document.querySelector('.summary__item--prototype').cloneNode(true);
+                summaryElement.style.display = 'block';
+            
+                summaryElement.querySelector('.summary__prices').innerText = `dorośli: ${adult} x ${adultPrice}PLN, dzieci: ${child} x ${childPrice}PLN`;
+                summaryElement.querySelector('.summary__name').innerText = tripName;
+                summaryElement.querySelector('.summary__total-price').innerText = sum + 'PLN';
+            
+                const removeBtn = summaryElement.querySelector('.summary__btn-remove');
+                removeBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const totalPrice = parseInt(summaryElement.querySelector('.summary__total-price').innerText);
+                    totalSum -= totalPrice;
+                    calculateTotalPrice();
+                    summaryElement.remove();
+                });
+            
+                summaryPanel.appendChild(summaryElement);
+            }
+**3. Form Validation and Order Processing**
+Ensuring all fields are filled correctly and providing order confirmation:
 
-Klient oczekuje, że użytkownik strony będzie mógł załadować sobie za pomocą formularza (`.uploader__input`) plik CSV, na podstawie którego zostaną do strony dodane wycieczki.
+            const orderForm = document.querySelector('.order');
+            orderForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+            
+                const nameInput = document.querySelector('input[name="name"]');
+                const emailInput = document.querySelector('input[name="email"]');
+                const name = nameInput.value.trim();
+                const email = emailInput.value.trim();
+            
+                if (name === '' || email === '' || !email.includes('@')) {
+                    const errorElement = document.createElement('p');
+                    errorElement.innerText = 'Proszę uzupełnić poprawnie wymagane pola';
+                    orderForm.appendChild(errorElement);
+                } else {
+                    const totalPrice = document.querySelector('.order__total-price-value').innerText;
+                    alert(`Dziękujemy za złożenie zamówienia o wartości ${totalPrice}. Szczegóły zamówienia zostały wysłane na adres e-mail: ${email}.`);
+            
+                    nameInput.value = '';
+                    emailInput.value = '';
+            
+                    const summaryList = document.querySelector('.panel__summary');
+                    summaryList.innerHTML = '';
+            
+                    totalSum = 0;
+                    calculateTotalPrice();
+                }
+            });
 
-W pliku [`./example.csv`](./example.csv) w każdym wierszu mamy dane na temat jednej wycieczki. Wartości te są rozdzielone przecinakami. Są to kolejno: **id**, **nazwa**, **opis**, **cena za dorosłego** oraz **cena za dziecko**.
+<br />
+<br />
 
-Po załadowaniu oferty użytkownik może wybrać dowolną wycieczkę. Wystarczy, że w polach formularza tej wycieczki wprowadzi liczbę osób dorosłych oraz dzieci i kliknie przycisk „dodaj do zamówienia” (`.excursions__field-input--submit`).
+## 🛠️ Languages and Tools used: 
 
-Wówczas „w koszyku” na liście (`.summary`) pojawi się kolejny element zawierający podsumowanie danych wybranej wycieczki. Jednocześnie cena za całość (`.order__total-price-value`) ulegnie zmianie.
+<img align="left" alt="JavaScript" width="50px" src="https://raw.githubusercontent.com/github/explore/379d8d145b878a5b7a1c2a5b5800b1d82d5c8c8f/topics/javascript/javascript.png" />
 
-Każda zamówiona wycieczka może zostać usunięta z listy po kliknięciu X (`.summary__btn-remove`).
+<img align="left" alt="HTML5" width="50px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/html/html.png" />
 
-Po dokonaniu wyboru wycieczek użytkownik może złożyć zamówienie. W tym celu wypełnia formularz zamówienia (`.order`).
+<img align="left" alt="CSS3" width="50px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/css/css.png" />
 
-Przed wysłaniem formularza musimy sprawdzić, czy pola zostały prawidłowo wypełnione, m.in. czy pole z imieniem i nazwiskiem nie jest puste i czy adres e-mail jest prawidłowy (np. zawiera znak @).
+<img align="left" alt="Git" width="50px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/git/git.png" />
 
-Jeśli dane są niepoprawne, to należy utworzyć w kodzie HTML stosowne miejsce i tam dodać odpowiednie komunikaty.
+<img align="left" alt="GitHub" width="50px" src="https://raw.githubusercontent.com/github/explore/78df643247d429f6cc873026c0622819ad797942/topics/github/github.png" />
 
-Gdy użytkownik prawidłowo złoży zamówienie, wyświetlamy `alert()` z komunikatem: 
+<img align="left" alt="Terminal" width="50px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/terminal/terminal.png" />
 
-> Dziękujemy za złożenie zamówienia o wartości [kwota zamówienia] PLN. Szczegóły zamówienia zostały wysłane na adres e-mail: adres@wpisanywformularzu.pl.
+<img align="left" alt="Visual Studio Code" width="50px" src="https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/visual-studio-code/visual-studio-code.png" />
 
-Następnie czyścimy pola wszystkich formularzy i listę wybranych wycieczek.
+<br />
+<br />
+<br />
+<br />
 
-## Implementacja
+## :blue_heart:  You can find me on:
+<br/>
 
-Potraktuj opis powyżej jako wytyczne, o których klient sam Ci opowiedział. Aby efektywnie pracować, powinieneś przed zabraniem się za realizację projektu uporządkować problemy i podzielić je na mniejsze części.
+[<img align="left" alt="Katarzyna Dworak LinkedIn" width="22px" src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/linkedin.svg" />](https://www.linkedin.com/in/katarzynadworakk/)
 
-Tutaj widzimy trzy główne zagadnienia:
-* ładowanie wycieczek
-* dodawanie wycieczek do listy zamówionych
-* obsługę formularza zamówienia.
+ 
+<br />
 
-Za każde kolejne zagadnienie z takiej listy powinniśmy zabierać się dopiero wtedy, gdy wcześniejsze zostało wykonane prawidłowo (działa).
-
-Poszczególne elementy, np. „ładowanie wycieczek” też możemy podzielić na mniejsze części. Zawsze zastanówmy się, jakie jest kolejne (najbliższe) działanie niezbędne do osiągnięcia celu.
-
-W przypadku „ładowania wycieczek” powinniśmy zrealizować następujące zadania:
-* obsługa wybierania pliku przez użytkownika
-* pobranie zawartości pliku
-* podział tej zawartości na wiersze (wycieczki)
-* podział wiersza na poszczególne elementy (id, nazwa itp.)
-* utworzenie odpowiednich elementów HTML i wypełnienie ich danymi
-* dodanie ich do drzewa DOM
-
-W ten sposób powinniśmy rozplanować pozostałe kroki.
-
-### CSV
-
-Przyjrzyjmy się plikowi [`./example.csv`](./example.csv):
-
-```
-"1","Ogrodzieniec","Zamek Ogrodzieniec – ruiny zamku leżącego na Jurze Krakowsko-Częstochowskiej, wybudowanego w systemie tzw. Orlich Gniazd, we wsi Podzamcze w województwie śląskim, w powiecie zawierciańskim, około 2 km na wschód od Ogrodzieńca. Zamek został wybudowany w XIV – XV w. przez ród Włodków Sulimczyków.","99","50"
-"2","Ojców","wieś w województwie małopolskim, w powiecie krakowskim, w gminie Skała, na terenie Wyżyny Krakowsko-Częstochowskiej, w Dolinie Prądnika, na Szlaku Orlich Gniazd. W Królestwie Polskim istniała gmina Ojców. W latach 1975–1998 miejscowość położona była w województwie krakowskim. W latach 1928–1966 Ojców miał status uzdrowiska posiadającego charakter użyteczności publicznej.","40","15"
-```
-
-Jeśli te dane mielibyśmy zapisane w zmiennej `const text`, to zamienienie tego ciągu znaków na tablicę, w której każdy element to wiersz, mogłoby wyglądać tak:
-
-```
-const lines = text.split(/[\r\n]+/gm);
-```
-
-W zależności od systemu operacyjnego znak nowej linii to `\n`, `\r` lub `\r\n`, dlatego używamy wyrażenia regularnego w celu podzielenia tekstu na wiersze.
-
-Podział na „kolumny” (czyli wyodrębnienie danych takich jak id, nazwa itp.) będzie trochę trudniejszy. Podział względem przecinka nie zadziała za dobrze, ponieważ ten znak może się też znajdować w treści opisu.
-
-Jak rozwiązać ten problem? To zostawiam już Tobie ;)
-
-### Zdarzenia
-
-Zauważ, że wycieczki są tworzone dynamicznie przez wybranie odpowiedniego pliku. To powoduje, że w momencie załadowania drzewa DOM nie możemy ich wyszukać ani tym bardziej utworzyć nasłuchiwania.
-
-Jednak od czego jest propagacja? Może warto zrobić nasłuchiwanie na elemencie, który istnieje w drzewie DOM (`.excursions`) i sprawdzać, co wywołuje dane zdarzenie (`e.target` lub `e.currentTarget`)?
-
-### Koszyk
-
-Przechowywanie wybranych wycieczek na liście to pewna forma koszyka – jak w sklepie internetowym. Mamy przedmiot oraz jego cenę i ilość (x2 – bo dla dorosłych i dzieci).
-
-Możesz utworzyć sobie zmienną `const basket = []` i tam `push`ować obiekt z odpowiednimi danymi:
-
-```
-{
-    title: 'Ogrodzieniec',
-    adultNumber: 1,
-    adultPrice: 99,
-    childNumber: 2,
-    childPrice: 50,
-}
-```
-
-### Prototypy
-
-Zauważ, że w kodzie występują prototypy (`.*--prototype`). Są one używane tylko po to, aby ułatwić prezentację danych. Możesz je modyfikować, jeśli uważasz, że to Ci pomoże w tworzeniu logiki (np. dodać `dataset`).
-
-Docelowo mają być one niewidoczne – możesz je ukryć przy pomocy CSS (`display: none`). Warto je jednak wykorzystać do skopiowania struktury kodu HTML, aby nie musieć budować jej od podstaw w kodzie JS.
-
-
-&nbsp;
-
-> ⭐ ***README** to coś więcej niż opis. Poprzez nie **pokazujesz swoje mocne strony** – swoją dokładność, sposób myślenia i podejście do rozwiązywania problemów. Niech Twoje README pokaże, że masz **świetne predyspozycje do rozwoju!***
-> 
-> 🎁 *Zacznij od razu. Skorzystaj z **[szablonu README i wskazówek](https://github.com/devmentor-pl/readme-template)**.* 
-
+### Thanks
+To my Mentor - devmentor.pl – for creating the task and for the code review.
