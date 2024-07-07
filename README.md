@@ -4,6 +4,7 @@
 <br />
 
 ## :star: Demonstration of the Project: ([Excursion Booking JS](https://katarzynadworak.github.io/excursion-booking-js/))
+**Important: To test the project, load the example.csv file.**
 <br />
 
 ## Main goal of my work was to:
